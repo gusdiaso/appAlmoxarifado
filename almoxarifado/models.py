@@ -1,0 +1,56 @@
+from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class Funcionario(models.Model):
+    matricula = models.CharField(max_length=10, primary_key=True)
+    nome = models.CharField(max_length=100)
+    senha = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nome
+
+class Item(models.Model):
+    nome = models.CharField(max_length=255)
+    quantidade_total = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.nome} - {self.quantidade_total} unidades"
+
+class AlocaItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    data = models.DateField(auto_now_add=True)
+    quantidade = models.IntegerField()
+    descricao = models.CharField(max_length=500)
+
+    def __str__(self):
+        return f"{self.user} - {self.item.nome}"
+    
+class RetiraItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey('Item', on_delete=models.CASCADE)
+    data = models.DateField(auto_now_add=True)
+    quantidade = models.IntegerField()
+    descricao = models.CharField(max_length=500)
+
+    def __str__(self):
+        return f"{self.user} - {self.item.nome}"
+
+class HistoricoItem(models.Model):
+    TIPO_ACAO = (
+        ('ALOCACAO', 'Alocação'),
+        ('RETIRADA', 'Retirada'),
+    )
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    data = models.DateTimeField(auto_now_add=True)
+    tipo = models.CharField(max_length=10, choices=TIPO_ACAO)
+    descricao = models.CharField(max_length=500)
+    quantidade_inicial = models.IntegerField()
+    quantidade = models.IntegerField()
+    quantidade_final = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.item.nome} - {self.get_tipo_display()} - {self.data.strftime('%d/%m/%Y %H:%M')}"
