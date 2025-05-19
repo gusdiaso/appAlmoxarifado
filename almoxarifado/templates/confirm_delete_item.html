@@ -14,7 +14,13 @@
         <div class="d-flex flex-column w-100">
             <form method="post" class="d-flex flex-column p-4 rounded-3">
                 {% csrf_token %}
-                <p>Você tem certeza que deseja remover o item "{{ item.nome }}"?</p>
+            <h4 class="alert-heading">Tem certeza que deseja remover o item <strong>"{{ item.nome }}"</strong>?</h4>
+            <p>Essa ação é <strong>irreversível</strong> e resultará na <strong>exclusão completa do histórico</strong> associado a este item.</p>
+            <hr>
+            <p class="mb-4">
+                <strong>Dica:</strong> Se seu objetivo é apenas registrar a saída do item, considere utilizar a opção <strong>Retirada</strong> em vez da remoção.
+            </p>
+
                 <div class="col d-flex justify-content-start gap-2 mt-2">
                     <button type="submit" class="btn btn-danger text-white">Remover</button>
                     <a href="{% url 'almoxarifado:index' %}" class="btn btn-secondary">Cancelar</a>

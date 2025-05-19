@@ -22,14 +22,12 @@ class ItemForm(forms.ModelForm):
 class EditItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ['nome', 'quantidade_total']
+        fields = ['nome',]
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'quantidade_total': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'})
         }
         labels = {
             'nome': 'Nome do Item',
-            'quantidade_total': 'Quantidade Total',
         }
 
 

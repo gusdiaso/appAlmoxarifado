@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import ItemForm, EditItemForm, AlocaItemForm, RetiraItemForm
 from .models import Item, AlocaItem, RetiraItem, HistoricoItem
 from django.db.models import Q
+import datetime
 
 @login_required
 def index(request):
@@ -21,6 +22,15 @@ def item_create(request):
         form = ItemForm(request.POST)
         if form.is_valid():
             form.save()
+            HistoricoItem.objects.create(
+                item=form.instance,
+                usuario=request.user.username,
+                tipo='ADICAO',
+                descricao="Adição de item",
+                quantidade_inicial=0,
+                quantidade=form.instance.quantidade_total,
+                quantidade_final=form.instance.quantidade_total
+            )
             return redirect('almoxarifado:index')
         else:
             print(form.errors)
@@ -40,7 +50,7 @@ def item_update(request, item_id):
             print(form.errors)
     else:
         form = EditItemForm(instance=item)
-    return render(request, 'form_item.html', {'form': form})
+    return render(request, 'form_item_edit.html', {'form': form, "item": item})
 
 @login_required
 def item_delete(request, item_id):
@@ -90,7 +100,12 @@ def retira_item(request):
             item = retirada.item
             if item.quantidade_total < retirada.quantidade:
                 form.add_error('quantidade', 'Quantidade insuficiente em estoque.')
-                return render(request, 'form_retira_item.html', {'form': form})
+                return render(request, 'form_item.html', {'form': form})
+            
+            if retirada.quantidade == 0:
+                form.add_error('quantidade', 'Quantidade deve ser maior que zero.')
+                return render(request, 'form_item.html', {'form': form})
+            
             quantidade_inicial = item.quantidade_total
             item.quantidade_total -= retirada.quantidade
             item.save()
@@ -112,9 +127,9 @@ def retira_item(request):
             print(form.errors)
     else:
         form = RetiraItemForm()
-    return render(request, 'retirada_item.html', {'form': form})
+    return render(request, 'form_item.html', {'form': form})
 
 @login_required
 def historico_view(request):
-    historicos = HistoricoItem.objects.select_related('item', 'usuario').order_by('-data')
+    historicos = HistoricoItem.objects.all().order_by('-data')
     return render(request, 'historico.html', {'historicos': historicos})

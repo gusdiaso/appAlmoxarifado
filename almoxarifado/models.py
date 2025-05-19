@@ -16,10 +16,10 @@ class Item(models.Model):
     quantidade_total = models.IntegerField()
 
     def __str__(self):
-        return f"{self.nome} - {self.quantidade_total} unidades"
+        return f"{self.nome}"
 
 class AlocaItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.CharField(max_length=100)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     data = models.DateField(auto_now_add=True)
     quantidade = models.IntegerField()
@@ -29,7 +29,7 @@ class AlocaItem(models.Model):
         return f"{self.user} - {self.item.nome}"
     
 class RetiraItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.CharField(max_length=100)
     item = models.ForeignKey('Item', on_delete=models.CASCADE)
     data = models.DateField(auto_now_add=True)
     quantidade = models.IntegerField()
@@ -42,9 +42,10 @@ class HistoricoItem(models.Model):
     TIPO_ACAO = (
         ('ALOCACAO', 'Alocação'),
         ('RETIRADA', 'Retirada'),
+        ('ADICAO', 'Adição'),
     )
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    usuario = models.CharField(max_length=100)
     data = models.DateTimeField(auto_now_add=True)
     tipo = models.CharField(max_length=10, choices=TIPO_ACAO)
     descricao = models.CharField(max_length=500)
