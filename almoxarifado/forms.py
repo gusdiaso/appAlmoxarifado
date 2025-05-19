@@ -39,14 +39,12 @@ class AlocaItemForm(forms.ModelForm):
     )
     class Meta:
         model = AlocaItem
-        fields = ['funcionario', 'item', 'quantidade', 'descricao']
+        fields = ['funcionario', 'quantidade', 'descricao']
         widgets = {
-            'item': forms.Select(attrs={'class': 'form-control'}),
             'quantidade': forms.NumberInput(attrs={'class': 'form-control'}),
             'descricao': forms.TextInput(attrs={'class': 'form-control'}),
         }
         labels = {
-            'item': 'Item',
             'quantidade': 'Quantidade',
             'descricao': 'Descrição'
         }
@@ -59,14 +57,12 @@ class RetiraItemForm(forms.ModelForm):
     )
     class Meta:
         model = RetiraItem
-        fields = ['funcionario', 'item', 'quantidade', 'descricao']
+        fields = ['funcionario', 'quantidade', 'descricao']
         widgets = {
-            'item': forms.Select(attrs={'class': 'form-control'}),
             'quantidade': forms.NumberInput(attrs={'class': 'form-control'}),
             'descricao': forms.TextInput(attrs={'class': 'form-control'}),
         }
         labels = {
-            'item': 'Item',
             'quantidade': 'Quantidade',
             'descricao': 'Descrição'
         }

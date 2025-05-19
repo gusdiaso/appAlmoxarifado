@@ -61,13 +61,15 @@ def item_delete(request, item_id):
     return render(request, 'confirm_delete_item.html', {'item': item})
 
 @login_required
-def aloca_item(request):
+def aloca_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
     if request.method == 'POST':
         form = AlocaItemForm(request.POST)
         if form.is_valid():
             alocacao = form.save(commit=False)
+            alocacao.item = item
             alocacao.user = form.cleaned_data['funcionario']
-            item = alocacao.item
+            item = item
             quantidade_inicial = item.quantidade_total
             item.quantidade_total += alocacao.quantidade
             item.save()
@@ -91,13 +93,15 @@ def aloca_item(request):
     return render(request, 'aloca_item.html', {'form': form})
 
 @login_required
-def retira_item(request):
+def retira_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
     if request.method == 'POST':
         form = RetiraItemForm(request.POST)
         if form.is_valid():
             retirada = form.save(commit=False)
+            retirada.item = item
             retirada.user = form.cleaned_data['funcionario']
-            item = retirada.item
+            item = item
             if item.quantidade_total < retirada.quantidade:
                 form.add_error('quantidade', 'Quantidade insuficiente em estoque.')
                 return render(request, 'form_item.html', {'form': form})
