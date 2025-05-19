@@ -30,7 +30,7 @@
                         <tr>
                             <th scope="col">Nome</th>
                             <th scope="col">Quantidade</th>
-                            <th scope="col"></th>
+                            <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,11 +46,15 @@
                         <tr>
                             <td>{{ item.nome }}</td>
                             <td>{{ item.quantidade_total }}</td>
-                            <td class="d-flex justify-content-end gap-2">                                
-                                <a href="{% url 'almoxarifado:update_item' item.id %}" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a href="{% url 'almoxarifado:delete_item' item.id %}" class="btn btn-dark btn-sm"><i class="fa-solid fa-trash-can"></i></a>
-                                <a href="{% url 'almoxarifado:retira_item' item.id %}" class="btn btn-danger btn-sm">Retirada</a>
-                                <a href="{% url 'almoxarifado:aloca_item' item.id%}" class="btn btn-success btn-sm">Alocação</a>
+                            <td class="d-flex justify-content-between gap-2">      
+                                <div>
+                                    <a href="{% url 'almoxarifado:update_item' item.id %}" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a href="{% url 'almoxarifado:delete_item' item.id %}" class="btn btn-dark btn-sm"><i class="fa-solid fa-trash-can"></i></a>
+                                </div>            
+                                <div>
+                                    <a href="{% url 'almoxarifado:retira_item' item.id %}" class="btn btn-danger btn-sm"><i class="fa-solid fa-minus"></i></a>
+                                    <a href="{% url 'almoxarifado:aloca_item' item.id%}" class="btn btn-success btn-sm"><i class="fa-solid fa-plus"></i></i></a>
+                                </div>              
                             </div>
                         </tr>
                         {% endfor %}
