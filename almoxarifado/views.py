@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import ItemForm, EditItemForm, AlocaItemForm, RetiraItemForm
-from .models import Item, AlocaItem, RetiraItem, HistoricoItem
+from .models import Item, HistoricoItem
 from django.db.models import Q
-import datetime
 
 @login_required
-def index(request):
+def almoxarifado(request):
     query = request.GET.get('filtro', '')
     if query:
         items = Item.objects.filter(
@@ -14,7 +13,7 @@ def index(request):
         )
     else:
         items = Item.objects.all()
-    return render(request, 'index.html', { 'items': items, 'filtro': query })
+    return render(request, 'almoxarifado.html', { 'items': items, 'filtro': query })
 
 @login_required
 def item_create(request):
@@ -31,7 +30,7 @@ def item_create(request):
                 quantidade=form.instance.quantidade_total,
                 quantidade_final=form.instance.quantidade_total
             )
-            return redirect('almoxarifado:index')
+            return redirect('almoxarifado:almoxarifado')
         else:
             print(form.errors)
     else:
@@ -45,7 +44,7 @@ def item_update(request, item_id):
         form = EditItemForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('almoxarifado:index')
+            return redirect('almoxarifado:almoxarifado')
         else:
             print(form.errors)
     else:
@@ -57,7 +56,7 @@ def item_delete(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     if request.method == 'POST':
         item.delete()
-        return redirect('almoxarifado:index')
+        return redirect('almoxarifado:almoxarifado')
     return render(request, 'confirm_delete_item.html', {'item': item})
 
 @login_required
@@ -85,7 +84,7 @@ def aloca_item(request, item_id):
                 quantidade=alocacao.quantidade,
                 quantidade_final=item.quantidade_total
             )
-            return redirect('almoxarifado:index')
+            return redirect('almoxarifado:almoxarifado')
         else:
             print(form.errors)
     else:
@@ -126,7 +125,7 @@ def retira_item(request, item_id):
                 quantidade_final=item.quantidade_total
 
             )
-            return redirect('almoxarifado:index')
+            return redirect('almoxarifado:almoxarifado')
         else:
             print(form.errors)
     else:

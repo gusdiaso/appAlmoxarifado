@@ -1,16 +1,4 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-class Funcionario(models.Model):
-    matricula = models.CharField(max_length=10, primary_key=True)
-    nome = models.CharField(max_length=100)
-    senha = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.nome
-
 class Item(models.Model):
     nome = models.CharField(max_length=255)
     quantidade_total = models.IntegerField()

@@ -1,10 +1,9 @@
-# form criar almoxarifado
-
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Item, Funcionario, AlocaItem, RetiraItem
+from .models import Item, AlocaItem, RetiraItem
 
-User = get_user_model()
+# from instituicoes.models import Servidor as Funcionario
+Funcionario = get_user_model()
 
 class ItemForm(forms.ModelForm):
     class Meta:
@@ -33,7 +32,7 @@ class EditItemForm(forms.ModelForm):
 
 class AlocaItemForm(forms.ModelForm):
     funcionario = forms.ModelChoiceField(
-        queryset=User.objects.all(),
+        queryset=Funcionario.objects.all(),
         widget=forms.Select(attrs={'class': 'form-control'}),
         label='Funcionário'
     )
@@ -51,7 +50,7 @@ class AlocaItemForm(forms.ModelForm):
 
 class RetiraItemForm(forms.ModelForm):
     funcionario = forms.ModelChoiceField(
-        queryset=User.objects.all(),
+        queryset=Funcionario.objects.all(),
         widget=forms.Select(attrs={'class': 'form-control'}),
         label='Funcionário'
     )
