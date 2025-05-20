@@ -31,14 +31,9 @@ class EditItemForm(forms.ModelForm):
 
 
 class AlocaItemForm(forms.ModelForm):
-    funcionario = forms.ModelChoiceField(
-        queryset=Funcionario.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        label='Funcionário'
-    )
     class Meta:
         model = AlocaItem
-        fields = ['funcionario', 'quantidade', 'descricao']
+        fields = ['quantidade', 'descricao']
         widgets = {
             'quantidade': forms.NumberInput(attrs={'class': 'form-control'}),
             'descricao': forms.TextInput(attrs={'class': 'form-control'}),
@@ -49,14 +44,9 @@ class AlocaItemForm(forms.ModelForm):
         }
 
 class RetiraItemForm(forms.ModelForm):
-    funcionario = forms.ModelChoiceField(
-        queryset=Funcionario.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        label='Funcionário'
-    )
     class Meta:
         model = RetiraItem
-        fields = ['funcionario', 'quantidade', 'descricao']
+        fields = ['quantidade', 'descricao']
         widgets = {
             'quantidade': forms.NumberInput(attrs={'class': 'form-control'}),
             'descricao': forms.TextInput(attrs={'class': 'form-control'}),
